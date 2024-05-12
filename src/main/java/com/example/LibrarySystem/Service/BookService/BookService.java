@@ -26,7 +26,7 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public boolean createBook(BookRequest bookRequest) {
+    public Book createBook(BookRequest bookRequest) {
         Book book = new Book();
         book.setTitle(bookRequest.getTitle());
         book.setAuthor(bookRequest.getAuthor());
@@ -36,9 +36,9 @@ public class BookService implements IBookService{
         book.setDescription(bookRequest.getDescription());
         Book savedBook = bookRepository.save(book);
         if(savedBook!=null){
-            return true;
+            return savedBook;
         }
-        return false;
+        return null;
     }
 
     @Override

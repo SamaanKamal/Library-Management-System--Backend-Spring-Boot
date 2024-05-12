@@ -9,7 +9,7 @@ public interface IBookService {
 
     List<Book> getAllBooks();
     Book getBook(Integer bookId);
-    boolean createBook(BookRequest bookRequest);
+    Book createBook(BookRequest bookRequest);
     Book updateBook(Integer bookId,BookRequest bookRequest);
     boolean deleteBook(Integer bookId);
 
