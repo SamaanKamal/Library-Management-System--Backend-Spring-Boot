@@ -26,13 +26,20 @@ public class BorrowingRecordService implements IBorrowingRecordService{
                 new RuntimeException("Book not found with id:"  + bookId));
         Patron patron= patronRepository.findById(patronId).orElseThrow(()->
                 new RuntimeException("Patron not found with id:"  + patronId));
-        if(!isBookAvailable(bookId)){
-            try {
-                throw new BadRequestException("Book is currently unavailable for borrowing!");
-            } catch (BadRequestException e) {
-                throw new RuntimeException(e);
-            }
+        BorrowingRecord borrowed = borrowingRecordRepository.findByBookAndPatron(book,patron).orElseThrow(
+                ()-> new RuntimeException("Borrowing Record not Found with Book Id: " + book.getBookId()  + " and Patron Id: "+ patron.getPatronId())
+        );
+        if(borrowed!=null&&borrowed.getReturnDate()==null){
+            throw new RuntimeException("Book is already borrowed by this patron!");
         }
+
+//        if(!isBookAvailable(bookId)){
+//            try {
+//                throw new BadRequestException("Book is currently unavailable for borrowing!");
+//            } catch (BadRequestException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);
@@ -48,19 +55,24 @@ public class BorrowingRecordService implements IBorrowingRecordService{
     @Override
     public boolean returnBook(Integer bookId, Integer patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordRepository.findByBookAndPatron(bookRepository.findById(bookId).get(), patronRepository.findById(patronId).get())
-                .orElseThrow(() -> new RuntimeException("Borrowing record not found"));
+                .orElseThrow(() -> new RuntimeException("Borrowing Record not Found with Book Id: " + bookId  + " and Patron Id: "+ patronId));
 
-        // Update the returned date in the borrowing record
+        if(borrowingRecord==null&&borrowingRecord.getReturnDate()!=null){
+            throw new RuntimeException("Book is not currently borrowed by this patron!");
+        }
         borrowingRecord.setReturnDate(LocalDate.now());
 
-        // Save the updated borrowing record
         BorrowingRecord savedBorrowingRecord =borrowingRecordRepository.save(borrowingRecord);
         if(savedBorrowingRecord!=null){
             return true;
         }
         return false;
     }
-    public boolean isBookAvailable(Integer bookId) {
-        return !borrowingRecordRepository.existsByBookIdAndReturnedDateIsNull(bookId);
-    }
+
+//    public boolean isBookAvailable(Integer bookId) {
+//        return !borrowingRecordRepository.existsByBookIdAndReturnDateIsNull(bookId);
+//    }
+//    public boolean isBookBorrowedByPatron(Integer bookId, Integer patronId) {
+//        return borrowingRecordRepository.existsByBookIdAndPatronIdAndReturnDateIsNull(bookId, patronId);
+//    }
 }
