@@ -26,15 +26,15 @@ public class PatronService implements IPatronService{
     }
 
     @Override
-    public boolean createPatron(PatronRequest patronRequest) {
+    public Patron createPatron(PatronRequest patronRequest) {
         Patron patron = new Patron();
         patron.setName(patronRequest.getName());
         patron.setContactInformation(patronRequest.getContactInformation());
         Patron savedPatron =patronRepository.save(patron);
         if(savedPatron!=null){
-            return true;
+            return savedPatron;
         }
-        return false;
+        return null;
     }
 
     @Override
