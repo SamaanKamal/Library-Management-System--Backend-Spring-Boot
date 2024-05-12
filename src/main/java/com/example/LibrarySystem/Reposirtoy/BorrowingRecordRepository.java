@@ -10,5 +10,8 @@ import java.util.Optional;
 
 public interface BorrowingRecordRepository extends JpaRepository<BorrowingRecord,Integer> {
     Optional<BorrowingRecord> findByBookAndPatron(Book book, Patron patron);
-    boolean existsByBookIdAndReturnedDateIsNull(Integer bookId);
+
+//    boolean existsByBookIdAndReturnDateIsNull(Integer bookId);
+//
+//    boolean existsByBookIdAndPatronIdAndReturnDateIsNull(Integer bookId, Integer patronId);
 }
