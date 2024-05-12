@@ -10,4 +10,8 @@ public class PatronResponse {
     public PatronResponse(List<Patron> patrons) {
         this.patrons = patrons;
     }
+
+    public List<Patron> getPatrons() {
+        return patrons;
+    }
 }
