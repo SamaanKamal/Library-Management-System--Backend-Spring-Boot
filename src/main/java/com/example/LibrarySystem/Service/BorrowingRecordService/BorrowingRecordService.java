@@ -6,6 +6,7 @@ import com.example.LibrarySystem.Entity.Patron;
 import com.example.LibrarySystem.Reposirtoy.BookRepository;
 import com.example.LibrarySystem.Reposirtoy.BorrowingRecordRepository;
 import com.example.LibrarySystem.Reposirtoy.PatronRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -23,6 +24,13 @@ public class BorrowingRecordService implements IBorrowingRecordService{
                 new RuntimeException("Book not found with id:"  + bookId));
         Patron patron= patronRepository.findById(patronId).orElseThrow(()->
                 new RuntimeException("Patron not found with id:"  + patronId));
+        if(!isBookAvailable(bookId)){
+            try {
+                throw new BadRequestException("Book is currently unavailable for borrowing!");
+            } catch (BadRequestException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);
