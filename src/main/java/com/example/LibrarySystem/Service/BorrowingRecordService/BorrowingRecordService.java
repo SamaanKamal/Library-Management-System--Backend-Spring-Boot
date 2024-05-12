@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class BorrowingRecordService implements IBorrowingRecordService{
@@ -26,10 +27,8 @@ public class BorrowingRecordService implements IBorrowingRecordService{
                 new RuntimeException("Book not found with id:"  + bookId));
         Patron patron= patronRepository.findById(patronId).orElseThrow(()->
                 new RuntimeException("Patron not found with id:"  + patronId));
-        BorrowingRecord borrowed = borrowingRecordRepository.findByBookAndPatron(book,patron).orElseThrow(
-                ()-> new RuntimeException("Borrowing Record not Found with Book Id: " + book.getBookId()  + " and Patron Id: "+ patron.getPatronId())
-        );
-        if(borrowed!=null&&borrowed.getReturnDate()==null){
+        Optional<BorrowingRecord> existingRecord = borrowingRecordRepository.findByBookAndPatron(book,patron);
+        if(existingRecord.isPresent()&&existingRecord.get().getReturnDate()==null){
             throw new RuntimeException("Book is already borrowed by this patron!");
         }
 
