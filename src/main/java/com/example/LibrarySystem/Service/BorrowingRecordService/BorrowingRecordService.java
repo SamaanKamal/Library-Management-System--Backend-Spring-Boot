@@ -8,9 +8,11 @@ import com.example.LibrarySystem.Reposirtoy.BorrowingRecordRepository;
 import com.example.LibrarySystem.Reposirtoy.PatronRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+@Service
 public class BorrowingRecordService implements IBorrowingRecordService{
     @Autowired
     private BorrowingRecordRepository borrowingRecordRepository;
