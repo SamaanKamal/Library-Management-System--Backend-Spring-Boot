@@ -68,7 +68,7 @@ public class PatronController {
         }
         boolean isDeleted= patronService.deletePatron(id);
         if(isDeleted){
-            return ResponseEntity.status(HttpStatus.OK).body("Book Deleted Successfully");
+            return ResponseEntity.status(HttpStatus.OK).body("Patron Deleted Successfully");
         }
         return ResponseEntity.internalServerError().build();
     }
