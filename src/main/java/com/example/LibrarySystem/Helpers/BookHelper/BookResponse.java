@@ -10,4 +10,8 @@ public class BookResponse {
     public BookResponse(List<Book> books) {
         this.books = books;
     }
+
+    public List<Book> getBooks() {
+        return books;
+    }
 }
