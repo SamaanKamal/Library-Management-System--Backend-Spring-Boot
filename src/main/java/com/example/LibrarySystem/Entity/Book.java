@@ -1,6 +1,8 @@
 package com.example.LibrarySystem.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "book")
@@ -10,12 +12,17 @@ public class Book {
     @Column(name = "book_id")
     private Integer bookId;
     @Column(name = "title")
+    @NotBlank(message = "Title is mandatory")
     private String title;
     @Column(name = "author")
+    @NotBlank(message = "Author is mandatory")
     private String author;
     @Column(name = "publication_year")
+    @NotBlank(message = "publication year is mandatory")
     private int publicationYear;
     @Column(name = "isbn")
+    @NotBlank(message = "ISBN is mandatory")
+    @Size(min = 10, max = 13, message = "ISBN must be 10 or 13 characters long")
     private String isbn;
     @Column(name = "edition")
     private String edition;

@@ -1,6 +1,7 @@
 package com.example.LibrarySystem.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "patron")
@@ -10,8 +11,10 @@ public class Patron {
     @Column(name = "patron_id")
     private Integer patronId;
     @Column(name = "name")
+    @NotBlank(message = "Name is mandatory")
     private String name;
     @Column(name = "contact_information")
+    @NotBlank(message = "contact information is mandatory")
     private String contactInformation;
 
     public Patron() {
