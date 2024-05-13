@@ -9,6 +9,7 @@ import com.example.LibrarySystem.Service.BorrowingRecordService.IBorrowingRecord
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,7 @@ public class BorrowingRecordController {
 
 
     @PostMapping("/borrow/{bookId}/patron/{patronId}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<?> borrowBook(@PathVariable("bookId") Integer bookId, @PathVariable("patronId") Integer patronId) {
 //        if (!borrowingRecordService.isBookAvailable(bookId)) {
 //            return new ResponseEntity<>("The book is already borrowed", HttpStatus.BAD_REQUEST);
@@ -34,6 +36,7 @@ public class BorrowingRecordController {
     }
 
     @PutMapping("/return/{bookId}/patron/{patronId}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<String> returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
 //        boolean bookBorrowedByPatron = borrowingRecordService.isBookBorrowedByPatron(bookId, patronId);
 //        if (!bookBorrowedByPatron) {
