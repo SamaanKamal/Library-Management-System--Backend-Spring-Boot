@@ -7,6 +7,7 @@ import com.example.LibrarySystem.Service.BookService.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class BookController {
     private IBookService bookService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<BookResponse> fetchBooks(){
         List<Book> books =bookService.getAllBooks();
         if(books==null){
@@ -28,6 +30,7 @@ public class BookController {
         return ResponseEntity.ok(bookResponse);
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Book> fetchBook(@PathVariable("id") Integer id){
         if(id==null){
             return ResponseEntity.badRequest().build();
@@ -40,6 +43,7 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Book> createBook(@RequestBody BookRequest bookRequest){
         if(bookRequest==null){
             return ResponseEntity.badRequest().build();
@@ -51,6 +55,7 @@ public class BookController {
         return  ResponseEntity.internalServerError().build();
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Book> updateBook(@PathVariable("id") Integer id,@RequestBody BookRequest bookRequest){
         if(bookRequest==null||id ==null){
             return ResponseEntity.badRequest().build();
@@ -63,6 +68,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<String> deleteBook(@PathVariable("id") Integer id){
         if(id ==null){
             return ResponseEntity.badRequest().build();
