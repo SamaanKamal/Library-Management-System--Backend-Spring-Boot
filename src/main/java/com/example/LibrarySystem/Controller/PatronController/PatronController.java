@@ -7,6 +7,7 @@ import com.example.LibrarySystem.Service.PatronService.IPatronService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class PatronController {
     private IPatronService patronService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<PatronResponse> fetchPatrons(){
         List<Patron> patrons =patronService.getAllPatrons();
         if(patrons==null){
@@ -27,6 +29,7 @@ public class PatronController {
         return ResponseEntity.ok(patronResponse);
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Patron> fetchPatron(@PathVariable("id") Integer id){
         if(id==null){
             return ResponseEntity.badRequest().build();
@@ -39,6 +42,7 @@ public class PatronController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Patron> createPatron(@RequestBody PatronRequest patronRequest){
         if(patronRequest==null){
             return ResponseEntity.badRequest().build();
@@ -50,6 +54,7 @@ public class PatronController {
         return  ResponseEntity.internalServerError().build();
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<Patron> updatePatron(@PathVariable("id") Integer id,@RequestBody PatronRequest patronRequest){
         if(patronRequest==null||id ==null){
             return ResponseEntity.badRequest().build();
@@ -62,6 +67,7 @@ public class PatronController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<String> deletePatron(@PathVariable("id") Integer id){
         if(id ==null){
             return ResponseEntity.badRequest().build();
