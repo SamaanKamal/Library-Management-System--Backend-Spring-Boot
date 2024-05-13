@@ -52,7 +52,7 @@ public class BorrowingRecordService implements IBorrowingRecordService{
     }
 
     @Override
-    public boolean returnBook(Integer bookId, Integer patronId) {
+    public BorrowingRecord returnBook(Integer bookId, Integer patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordRepository.findByBookAndPatron(bookRepository.findById(bookId).get(), patronRepository.findById(patronId).get())
                 .orElseThrow(() -> new RuntimeException("Borrowing Record not Found with Book Id: " + bookId  + " and Patron Id: "+ patronId));
 
@@ -63,9 +63,9 @@ public class BorrowingRecordService implements IBorrowingRecordService{
 
         BorrowingRecord savedBorrowingRecord =borrowingRecordRepository.save(borrowingRecord);
         if(savedBorrowingRecord!=null){
-            return true;
+            return savedBorrowingRecord;
         }
-        return false;
+        return null;
     }
 
 //    public boolean isBookAvailable(Integer bookId) {
