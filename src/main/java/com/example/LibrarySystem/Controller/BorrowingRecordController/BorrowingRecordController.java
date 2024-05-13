@@ -37,15 +37,15 @@ public class BorrowingRecordController {
 
     @PutMapping("/return/{bookId}/patron/{patronId}")
     @PreAuthorize("hasAuthority('User')")
-    public ResponseEntity<String> returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
+    public ResponseEntity<?> returnBook(@PathVariable Integer bookId, @PathVariable Integer patronId) {
 //        boolean bookBorrowedByPatron = borrowingRecordService.isBookBorrowedByPatron(bookId, patronId);
 //        if (!bookBorrowedByPatron) {
 //            return new ResponseEntity<>("The book is not currently borrowed by the specified patron", HttpStatus.BAD_REQUEST);
 //        }
 
-        boolean returned = borrowingRecordService.returnBook(bookId, patronId);
-        if (returned) {
-            return new ResponseEntity<>("Book returned successfully", HttpStatus.OK);
+        BorrowingRecord returned = borrowingRecordService.returnBook(bookId, patronId);
+        if (returned!=null) {
+            return new ResponseEntity<>(returned, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to return book", HttpStatus.BAD_REQUEST);
         }
