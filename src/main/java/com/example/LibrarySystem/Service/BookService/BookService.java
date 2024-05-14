@@ -4,6 +4,9 @@ import com.example.LibrarySystem.Entity.Book;
 import com.example.LibrarySystem.Helpers.BookHelper.BookRequest;
 import com.example.LibrarySystem.Reposirtoy.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +18,13 @@ public class BookService implements IBookService{
     private BookRepository bookRepository;
 
     @Override
+    @Cacheable(cacheNames = "books", unless = "#result.isEmpty()")
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "books",key = "#bookId")
     public Book getBook(Integer bookId) {
         return bookRepository.findById(bookId).orElseThrow(()->
                 new RuntimeException("Book not found with id:"  + bookId));
@@ -42,6 +47,7 @@ public class BookService implements IBookService{
     }
 
     @Override
+    @CachePut(value = "books", key = "#bookId")
     public Book updateBook(Integer bookId, BookRequest bookRequest) {
         Book book =bookRepository.findById(bookId).orElseThrow(()->
                 new RuntimeException("Book not found with id:"  + bookId));
@@ -56,6 +62,7 @@ public class BookService implements IBookService{
     }
 
     @Override
+    @CacheEvict(cacheNames = "books", key = "#bookId")
     public boolean deleteBook(Integer bookId) {
         Book book =bookRepository.findById(bookId).orElseThrow(()->
                 new RuntimeException("Book not found with id:"  + bookId));
