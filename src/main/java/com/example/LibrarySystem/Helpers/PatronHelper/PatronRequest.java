@@ -9,6 +9,11 @@ public class PatronRequest {
     public PatronRequest() {
     }
 
+    public PatronRequest(String name, String contactInformation) {
+        this.name = name;
+        this.contactInformation = contactInformation;
+    }
+
     public String getName() {
         return name;
     }
