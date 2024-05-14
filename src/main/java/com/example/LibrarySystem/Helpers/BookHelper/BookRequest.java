@@ -9,6 +9,15 @@ public class BookRequest {
     private String edition;
     private String description;
 
+    public BookRequest(String title, String author, int publicationYear, String isbn, String edition, String description) {
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
+        this.isbn = isbn;
+        this.edition = edition;
+        this.description = description;
+    }
+
     public String getTitle() {
         return title;
     }
