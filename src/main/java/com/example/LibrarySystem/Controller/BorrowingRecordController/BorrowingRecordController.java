@@ -26,6 +26,12 @@ public class BorrowingRecordController {
 //        if (!borrowingRecordService.isBookAvailable(bookId)) {
 //            return new ResponseEntity<>("The book is already borrowed", HttpStatus.BAD_REQUEST);
 //        }
+        if(bookId==null){
+            return ResponseEntity.badRequest().body("Bad Request, Book Id is not Specified");
+        }
+        if(patronId==null){
+            return ResponseEntity.badRequest().body("Bad Request, Patron Id is not Specified");
+        }
 
         BorrowingRecord borrowed = borrowingRecordService.borrowBook(bookId, patronId);
         if (borrowed!=null) {
@@ -42,6 +48,13 @@ public class BorrowingRecordController {
 //        if (!bookBorrowedByPatron) {
 //            return new ResponseEntity<>("The book is not currently borrowed by the specified patron", HttpStatus.BAD_REQUEST);
 //        }
+        if(bookId==null){
+            return ResponseEntity.badRequest().body("Bad Request, Book Id is not Specified");
+        }
+        if(patronId==null){
+            return ResponseEntity.badRequest().body("Bad Request, Patron Id is not Specified");
+        }
+
 
         BorrowingRecord returned = borrowingRecordService.returnBook(bookId, patronId);
         if (returned!=null) {
