@@ -40,6 +40,7 @@ public class BorrowingRecordService implements IBorrowingRecordService{
 //            }
 //        }
         book.setAvailable(false);
+        bookRepository.save(book);
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);
         borrowingRecord.setPatron(patron);
