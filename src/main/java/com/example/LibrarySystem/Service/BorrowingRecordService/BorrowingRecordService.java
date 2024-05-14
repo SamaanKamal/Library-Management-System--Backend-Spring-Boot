@@ -61,6 +61,9 @@ public class BorrowingRecordService implements IBorrowingRecordService{
             throw new RuntimeException("Book is not currently borrowed by this patron!");
         }
         borrowingRecord.setReturnDate(LocalDate.now());
+        Book newBook = book.get();
+        newBook.setAvailable(true);
+        bookRepository.save(newBook);
 
         BorrowingRecord savedBorrowingRecord =borrowingRecordRepository.save(borrowingRecord);
         if(savedBorrowingRecord!=null){
