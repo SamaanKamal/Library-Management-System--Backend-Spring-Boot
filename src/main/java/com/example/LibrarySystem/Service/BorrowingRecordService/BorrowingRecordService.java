@@ -58,7 +58,7 @@ public class BorrowingRecordService implements IBorrowingRecordService{
                 .orElseThrow(() -> new RuntimeException("Borrowing Record not Found with Book Id: " + bookId  + " and Patron Id: "+ patronId));
 
         if(borrowingRecord==null&&borrowingRecord.getReturnDate()!=null&&book.get().isAvailable()){
-            throw new RuntimeException("Book is not currently borrowed by this patron!");
+            throw new RuntimeException("Book is not currently borrowed by this patron! or Already Returned");
         }
         borrowingRecord.setReturnDate(LocalDate.now());
         Book newBook = book.get();
