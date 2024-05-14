@@ -28,7 +28,7 @@ public class BorrowingRecordService implements IBorrowingRecordService{
         Patron patron= patronRepository.findById(patronId).orElseThrow(()->
                 new RuntimeException("Patron not found with id:"  + patronId));
         Optional<BorrowingRecord> existingRecord = borrowingRecordRepository.findByBookAndPatron(book,patron);
-        if(existingRecord.isPresent()&&existingRecord.get().getReturnDate()==null){
+        if(existingRecord.isPresent()&&existingRecord.get().getReturnDate()==null&&!book.isAvailable()){
             throw new RuntimeException("Book is already borrowed by this patron!");
         }
 
@@ -39,7 +39,7 @@ public class BorrowingRecordService implements IBorrowingRecordService{
 //                throw new RuntimeException(e);
 //            }
 //        }
-
+        book.setAvailable(false);
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);
         borrowingRecord.setPatron(patron);
@@ -53,10 +53,11 @@ public class BorrowingRecordService implements IBorrowingRecordService{
 
     @Override
     public BorrowingRecord returnBook(Integer bookId, Integer patronId) {
+        Optional<Book> book = bookRepository.findById(bookId);
         BorrowingRecord borrowingRecord = borrowingRecordRepository.findByBookAndPatron(bookRepository.findById(bookId).get(), patronRepository.findById(patronId).get())
                 .orElseThrow(() -> new RuntimeException("Borrowing Record not Found with Book Id: " + bookId  + " and Patron Id: "+ patronId));
 
-        if(borrowingRecord==null&&borrowingRecord.getReturnDate()!=null){
+        if(borrowingRecord==null&&borrowingRecord.getReturnDate()!=null&&book.get().isAvailable()){
             throw new RuntimeException("Book is not currently borrowed by this patron!");
         }
         borrowingRecord.setReturnDate(LocalDate.now());
