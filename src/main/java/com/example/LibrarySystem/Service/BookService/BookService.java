@@ -39,6 +39,7 @@ public class BookService implements IBookService{
         book.setIsbn(bookRequest.getIsbn());
         book.setEdition(bookRequest.getEdition());
         book.setDescription(bookRequest.getDescription());
+        book.setAvailable(true);
         Book savedBook = bookRepository.save(book);
         if(savedBook!=null){
             return savedBook;
