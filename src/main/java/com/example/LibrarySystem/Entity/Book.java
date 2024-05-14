@@ -29,16 +29,21 @@ public class Book {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "is_available")
+    @NotBlank
+    private boolean isAvailable;
+
     public Book() {
     }
 
-    public Book(String title, String author, int publicationYear, String isbn, String edition, String description) {
+    public Book(String title, String author, int publicationYear, String isbn, String edition, String description,boolean isAvailable) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.isbn = isbn;
         this.edition = edition;
         this.description = description;
+        this.isAvailable=isAvailable;
     }
 
     public Integer getBookId() {
@@ -95,5 +100,13 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }
