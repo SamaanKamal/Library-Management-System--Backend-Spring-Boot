@@ -1,6 +1,7 @@
 package com.example.LibrarySystem.AOP;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,5 +29,17 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
         logger.error("Exception in method: " + joinPoint.getSignature());
         logger.error("Exception message: " + exception.getMessage());
+    }
+
+    @Around("execution(* com.example.LibrarySystem.Service.BookService.BookService.addBook(..)) || " +
+            "execution(* com.example.LibrarySystem.Service.BookService.BookService.updateBook(..)) || " +
+            "execution(* com.example.LibrarySystem.Service.PatronService.PatronService.*(..))")
+    public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long startTime = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        logger.info(joinPoint.getSignature().toShortString() + " executed in " + executionTime + "ms");
+        return result;
     }
 }
